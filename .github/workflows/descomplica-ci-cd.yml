@@ -1,0 +1,62 @@
+name: CI/CD Descomplica teste
+
+on:
+  push:
+    branches:
+      - main
+      - hml
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Build Application
+        run: npm run build
+
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/staging'
+
+    steps:
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying to staging..."
+          docker run -d -p 80:80 nginx
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy to Production
+        run: |
+          echo "Deploying to production..."
+          docker run -d -p 80:80 nginx
