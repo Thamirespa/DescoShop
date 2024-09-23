@@ -50,6 +50,7 @@ aws eks --region us-east-1 update-kubeconfig --name descomplica_k8s
  - Subir itens de monitoração junto com todos os outros recursos de infraesturura
 
 **REFERÊNCIAS UTILIZADAS:**
+
 https://developer.hashicorp.com/terraform/tutorials/kubernetes/eks
 https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution
 https://dev.to/chinmay13/aws-networking-with-terraform-deploying-a-cloudfront-distribution-for-s3-static-website-2jbf
