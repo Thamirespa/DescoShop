@@ -22,6 +22,7 @@ aws eks --region us-east-1 update-kubeconfig --name descomplica_k8s
 **1. Backend em Kubernetes**
 
    Para iniciar attravés de um módulo uma vpc especifica para o projeto é criada para que o projeto tenha configuração especificas e também subnets isso se encontra no arquivo vpc.tf. Para ter mais visibilidade e entendimento da cada item criado o cluster foi criado também através de um módulo no arquivo eks.tf. E dentro desse arquivo também está subindo os itens relacionados ao cluster:
+   
     -Configuração para acesso ao cluster
     -Namespace 
     -Cronjob
@@ -36,6 +37,7 @@ aws eks --region us-east-1 update-kubeconfig --name descomplica_k8s
 **4. Observabilidade**
 
    Para monitoração há um arquivo chamado prometheus.tf onde o helm desse serviço é configurado para que possa ser puxadas as metricas e assim visualizadas via Grafana. Para visualização após a subida da estrutura é necessário expor o serviço criado acessando pelo link local :
+   
       - kubectl get svc -A
       - kubectl port-forward -n monitoring svc/prometheus-grafana 3000:80
       - http://localhost:3000 
