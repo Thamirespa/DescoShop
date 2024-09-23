@@ -1,3 +1,4 @@
+#Módulo de criação do cluster EKS
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "20.8.5"
@@ -40,6 +41,7 @@ module "eks" {
   }
 }
 
+#Configuração para acesso ao cluster
 provider "kubernetes" {
   host                   = module.eks.cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
@@ -50,7 +52,7 @@ provider "kubernetes" {
   }
 }
 
-
+#Criação dos namaspace
 resource "kubernetes_namespace" "deploy" {
   metadata {
     name = "deploy"
@@ -62,7 +64,13 @@ resource "kubernetes_namespace" "cronjob" {
     name = "cronjob"
   }
 }
+resource "kubernetes_namespace" "monitoring" {
+  metadata {
+    name = "monitoring"
+  }
+}
 
+#Criação do cronjob via terraform 
 resource "kubernetes_cron_job_v1" "descomplicacron" {
   metadata {
     name = "descomplicacron"

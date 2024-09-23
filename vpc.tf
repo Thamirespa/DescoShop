@@ -4,7 +4,7 @@ data "aws_availability_zones" "available" {
     values = ["opt-in-not-required"]
   }
 }
-
+#Módulo de criação da VPC com as subnets
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.1"

@@ -1,0 +1,71 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alertmanager:
+  enabled: true
+  service:
+    type: ClusterIP
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    ruleSelector: {}
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: "10Gi"
+    resources:
+      limits:
+        cpu: 200m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    retention: 10d
+
+grafana:
+  enabled: true
+  adminPassword: "descomplicateste"
+  service:
+    type: ClusterIP
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+kubeEtcd:
+  serviceMonitor:
+    scheme: https
+    insecureSkipVerify: true
+
+kubeScheduler:
+  serviceMonitor:
+    scheme: https
+    insecureSkipVerify: true
+
+kubeControllerManager:
+  serviceMonitor:
+    scheme: https
+    insecureSkipVerify: true
+
+kubeProxy:
+  serviceMonitor:
+    enabled: true
+
+nodeExporter:
+  enabled: true
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi

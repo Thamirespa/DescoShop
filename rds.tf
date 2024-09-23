@@ -24,7 +24,7 @@ resource "aws_security_group" "rds_sg" {
 # Criando o DB Subnet Group usando as subnets privadas do módulo
 resource "aws_db_subnet_group" "rds_subnet_group" {
   name       = "rds-subnet-group"
-  subnet_ids = module.vpc.private_subnets  # Referência das subnets privadas do módulo
+  subnet_ids = module.vpc.private_subnets 
 
   tags = {
     Name = "rds-subnet-group"
@@ -48,24 +48,24 @@ resource "aws_db_instance" "descomplica_postgres" {
   db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
 
-  # Configurações de criptografia
+
   storage_encrypted = true
   kms_key_id        = aws_kms_key.rds_kms.arn
 
-  # Backups automáticos
+ 
   backup_retention_period = 7
   backup_window           = "03:00-04:00"
 
-  # Alta disponibilidade (Multi-AZ)
+  
   multi_az = true
 
-  # Impedir criação de snapshot final
+  
   skip_final_snapshot = true
 
-  # Proteção contra exclusão
+  
   deletion_protection = false
 
-  # Logs no CloudWatch
+  
   enabled_cloudwatch_logs_exports = ["postgresql"]
 
   depends_on = [

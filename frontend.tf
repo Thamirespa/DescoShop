@@ -1,6 +1,4 @@
-####################################################
-# S3 static website bucket
-####################################################
+#Criação do bucket
 resource "aws_s3_bucket" "descomplicafront" {
   bucket = "descomplicafront"
   tags =  {
@@ -8,9 +6,7 @@ resource "aws_s3_bucket" "descomplicafront" {
   }
 }
 
-####################################################
-# S3 public access settings
-####################################################
+#Controle de acesso ao bucket
 resource "aws_s3_bucket_public_access_block" "static_site_bucket_public_access" {
   bucket = aws_s3_bucket.descomplicafront.id
 
@@ -20,9 +16,6 @@ resource "aws_s3_bucket_public_access_block" "static_site_bucket_public_access" 
   restrict_public_buckets = true
 }
 
-####################################################
-# S3 bucket static website configuration
-####################################################
 resource "aws_s3_bucket_website_configuration" "static_site_bucket_descomplicafront" {
   bucket = aws_s3_bucket.descomplicafront.id
 
@@ -40,9 +33,7 @@ data "aws_s3_bucket" "selected_bucket" {
   bucket = aws_s3_bucket.descomplicafront.id
 }
 
-####################################################
-# Create AWS Cloudfront distribution
-####################################################
+#Criação do Cloud Front
 resource "aws_cloudfront_origin_access_control" "descomplica-cf" {
   name                              = "CloudFront descomplica "
   description                       = "CloudFront descomplica "
@@ -97,9 +88,7 @@ resource "aws_cloudfront_distribution" "cf-descomplica" {
 }
 
 
-####################################################
-# S3 bucket policy to allow access from cloudfront
-####################################################
+#Política para permitir acesso do bucket pelo cloudfront
 data "aws_iam_policy_document" "s3_bucket_policy" {
   statement {
     actions   = ["s3:GetObject"]
